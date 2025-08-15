@@ -1,0 +1,41 @@
+{
+  "name": "copilot-guided-file-creator",
+  "displayName": "Copilot Guided File Creator",
+  "description": "Custom command to start a guided Copilot Chat flow asking for filename, location, and purpose before generating code.",
+  "version": "0.1.0",
+  "publisher": "your-name-here",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:copilotGuided.start"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilotGuided.start",
+        "title": "Copilot: Start Guided File Creator (Chat-driven)"
+      }
+    ]
+  },
+  "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.4.0",
+    "vsce": "^2.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wesleypattisonfriss/postman-to-bruno-vscode-extension.git"
+  }
+}
