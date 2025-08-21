@@ -24,14 +24,14 @@ async function openChatWithPrompt(prompt: string): Promise<void> {
  * Registers commands and sets up extension context.
  */
 export function activate(context: vscode.ExtensionContext): void {
-  const disposable = vscode.commands.registerCommand('copilotGuided.start', async () => {
+  const disposable = vscode.commands.registerCommand('friss.postman.startMigration', async () => {
     const promptUri = vscode.Uri.joinPath(context.extensionUri, 'src/prompt.txt');
     let prompt = '';
     try {
       const promptData = await vscode.workspace.fs.readFile(promptUri);
       prompt = new TextDecoder('utf-8').decode(promptData);
     } catch (err) {
-      vscode.window.showWarningMessage('Could not read prompt.txt, using default prompt');
+      vscode.window.showWarningMessage('Could not read prompt.txt, uh oh.');
     }
     await openChatWithPrompt(prompt);
   });
