@@ -13,6 +13,10 @@ At the end of each step, you MUST:
    ```
    Step <n> done. Confirm? (ok / or type changes)
    ```
+  If the step is marked as recursive, also output:
+  ```
+  Have you manually searched for '<search-string>' in all files to ensure no instances remain? If you find any, type 'repeat' to run Step <n> again.
+  ```
 2. If user replies `ok` → output:
 
    ```
@@ -20,6 +24,7 @@ At the end of each step, you MUST:
    Explanation (Step <n+1>): <insert explanation here>
    ```
 3. If user types changes → apply them, then re-output confirmation prompt until `ok`.
+  If user types `repeat` → repeat the step and re-output confirmation prompt until `ok`.
 4. If user replies `no` → pause and wait.
 
 ---
@@ -34,6 +39,8 @@ Do you need to import environments? (yes/no)
 
 * If **no** → skip to Step 2.
 * If **yes**:
+
+  Repeat the following for each environment you want to create:
 
   1. Prompt:
 
@@ -62,6 +69,16 @@ Do you need to import environments? (yes/no)
         ```
         Saved: <bruno-project-path>/environments/<name>.bru
         ```
+
+  3. Prompt:
+
+     ```
+     Do you want to create another environment? (yes/no)
+     ```
+     * If **yes** → repeat Step 1.
+     * If **no** → proceed to Step 2.
+
+* This step is recursive. After completion, prompt the user to manually search for environment files in the environments folder to ensure all needed environments are created. If any are missing, repeat this step until all are created.
 
 ---
 
@@ -116,6 +133,8 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
+
 ---
 
 ## **Step 5: Replace `request.name` in Strings**
@@ -125,6 +144,8 @@ Please drag & drop the GLOBAL environment file here (or attach it).
     Example: `bru.setNextRequest(request.name);` inside someRequest-Example.bru → `bru.setNextRequest("someRequest-Example");`.
 * Open all updated request files in editor (one tab per file).
 * No user input required.
+
+* This step is recursive. After completion, prompt the user to manually search for `request.name` in all files. If any instances remain, repeat this step until all are replaced.
 
 ---
 
@@ -136,15 +157,18 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
+
 ---
 
 ## **Step 7: Move the post-response script over to Tests script**
 
 * Within the Bruno project folder (where `bruno.json` is located):
-  * Replace `script:post-response` with `tests` across all `.bru` request files in that project so that the object script:post-response {} will be converted to tests {}.
+  * Replace `script:post-response` with `tests` across all `.bru` request files in that project so that the object script:post-response {} will be converted to tests {} (Note: make sure all found instances have been modified).
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `script:post-response` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Step 8: Install XML parser if needed & Update Tests Scripts**
@@ -170,6 +194,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `xml2Json` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Step 9: Install Faker & Update Pre-request Scripts**
@@ -193,6 +218,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Step 10: Add collection-level variables if any are defined**
@@ -205,6 +231,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
   * And if the value for the specific key is a number, don't forget to convert to number: `bru.getCollectionVar(key)` -> `Number(bru.getCollectionVar(key))`
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for the keys inside `vars:pre-request` or `vars:post-response` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ---
@@ -219,6 +246,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
   * And if the value for the specific key is a number, don't forget to convert to number: `bru.getFolderVar(key)` -> `Number(bru.getFolderVar(key))`
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Step 12: Convert Bracket to Dot Notation**
@@ -226,6 +254,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * Replace `array[index]["Name"]` or `array[index]['Name']` with `array[index].Name` **only if `Name` is valid JS identifier**.
 * No user input required.
 
+* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Finalization Rules**
