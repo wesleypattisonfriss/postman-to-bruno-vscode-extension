@@ -54,15 +54,13 @@ Do you need to import environments? (yes/no)
        }
        ```
      * Remove any line with empty value.
-           * For each Bruno project folder (where `bruno.json` is located):
-        * Save as `<bruno-project-path>/environments/<name>.bru` (create `environments` folder if missing).
-      * Open all created files in editor (one tab per file).
-      * Output fenced code block + message:
+           * Within the Bruno project folder (where `bruno.json` is located):
+              * Save as `<bruno-project-path>/environments/<name>.bru` (create `environments` folder if missing).
+              * Open the file in editor (one tab per file).
+              * Output fenced code block + message:
 
         ```
-        Saved: <bruno-project-path-1>/environments/<name>.bru
-        Saved: <bruno-project-path-2>/environments/<name>.bru
-        ... (one line per Bruno project)
+        Saved: <bruno-project-path>/environments/<name>.bru
         ```
 
 ---
@@ -84,22 +82,20 @@ Please drag & drop the GLOBAL environment file here (or attach it).
      CLIENT_ID=SomeValue
      CLIENT_SECRET=SomeValue
      ```
-  3. For each Bruno project folder (where `bruno.json` is located):
+  3. Within the Bruno project folder (where `bruno.json` is located):
      * Save as `<bruno-project-path>/.env` (sibling to `bruno.json`).
-  4. Open all created files in editor (one tab per file).
+  4. Open the created file in editor (one tab per file).
   5. Output fenced code block + message:
 
      ```
-     Saved: <bruno-project-path-1>/.env
-     Saved: <bruno-project-path-2>/.env
-     ... (one line per Bruno project)
+     Saved: <bruno-project-path>/.env
      ```
 
 ---
 
 ## **Step 3: Propagate `.env` Keys into Bruno Environments**
 
-* For each Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (where `bruno.json` is located):
   * Read the `.env` file from that project folder.
   * For each key in `.env`: update/add entry in `environments/*.bru` files →
 
@@ -107,7 +103,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
     keyName: {{process.env.KEY}}
     ```
   * Do not duplicate. Overwrite if exists.
-* Open all updated environment files in editor (one tab per file).
+* Open the updated environment file in editor.
 * No user input required.
 
 ---
@@ -138,6 +134,40 @@ Please drag & drop the GLOBAL environment file here (or attach it).
   * Replace `bru.setEnvVar` with `bru.setVar` across all `.bru` request files in that project.
   * Preserve arguments and formatting.
 * Open all updated request files in editor (one tab per file).
+* No user input required.
+
+---
+
+## **Step 7: Move the post-response script over to Tests script**
+
+* For each Bruno project folder (where `bruno.json` is located):
+  * Replace `script:post-response` with `tests` across all `.bru` request files in that project so that the object script:post-response {} will be converted to tests {}.
+* Open all updated request files in editor (one tab per file).
+* No user input required.
+
+---
+
+## **Step 7: Install XML parser if needed & Update Tests Scripts**
+
+1. Run in folder with `bruno.json`:
+
+   ```
+   npm install fast-xml-parser
+   ```
+2. For each pre-request script or tests script where you see xml2Json being used:
+
+   * Insert the following as the first line within the pre-request script or tests script:
+
+     ```
+     const { XMLParser } = require("fast-xml-parser");
+      const parser = new XMLParser({
+        ignoreAttributes: false,
+      });
+     ```
+   * Then refactor the code to use this new parser insead of xml2Json:
+
+     * `xml2Json(JSON.stringify(res.getBody()))` → `parser.parse(res.getBody())`
+
 * No user input required.
 
 ---
