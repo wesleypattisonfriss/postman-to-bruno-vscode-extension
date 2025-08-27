@@ -128,11 +128,13 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ## **Step 4: Update Bruno API Usage**
 
 * For each Bruno project folder (where `bruno.json` is located):
-  * Replace `bru.getEnvVar` with `bru.getVar` across all `.bru` request files in that project.
+  * You'd be searching for instances of `bru.getEnvVar` within files
+  * Replace only `bru.getEnvVar` with `bru.getVar` across all `.bru` request files in that project.
   * Preserve arguments and formatting.
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* If more than 10 files found -> update in batches
 * This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
 
 ---
@@ -140,11 +142,13 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ## **Step 5: Replace `request.name` in Strings**
 
 * Within the Bruno project folder (where `bruno.json` is located):
+  * You'd be searching for instances of `"request.name"` within files
   * For each `.bru` request file in that project, replace `"request.name"` with the exact file name.
     Example: `bru.setNextRequest(request.name);` inside someRequest-Example.bru → `bru.setNextRequest("someRequest-Example");`.
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* If more than 10 files found -> update in batches
 * This step is recursive. After completion, prompt the user to manually search for `request.name` in all files. If any instances remain, repeat this step until all are replaced.
 
 ---
@@ -152,11 +156,13 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ## **Step 6: Update Bruno Setter Usage**
 
 * Within the Bruno project folder (where `bruno.json` is located):
+  * You'd be searching for instances of `bru.setEnvVar` within files
   * Replace `bru.setEnvVar` with `bru.setVar` across all `.bru` request files in that project.
   * Preserve arguments and formatting.
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* If more than 10 files found -> update in batches
 * This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
 
 ---
@@ -164,14 +170,19 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ## **Step 7: Move the post-response script over to Tests script**
 
 * Within the Bruno project folder (where `bruno.json` is located):
+  * You'd be searching for instances of `script:post-response` within files
   * Replace `script:post-response` with `tests` across all `.bru` request files in that project so that the object script:post-response {} will be converted to tests {} (Note: make sure all found instances have been modified).
 * Open all updated request files in editor (one tab per file).
 * No user input required.
 
+* If more than 10 files found -> update in batches
 * This step is recursive. After completion, prompt the user to manually search for `script:post-response` in all files. If any instances remain, repeat this step until all are replaced.
 ---
 
 ## **Step 8: Install XML parser if needed & Update Tests Scripts**
+
+* You'd be searching for instances of `xml2Json` within files
+* If any instances exist across all files, proceed with the following, otherwise output to the user that no XML parsing is needed and skip to Step 9:
 
 1. Run in folder with `bruno.json`:
 
@@ -198,6 +209,8 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ---
 
 ## **Step 9: Install Faker & Update Pre-request Scripts**
+* You'd be searching for instances of `$random` within files
+* If any instances exist across all files, proceed with the following, otherwise output to the user that no faker library usage is needed and skip to Step 10:
 
 1. Run in folder with `bruno.json`:
 
@@ -250,8 +263,10 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 ---
 
 ## **Step 12: Convert Bracket to Dot Notation**
+* You'd be searching for instances of `array[index]["Anything"]` (usage of bracket notation to get a property value from an index in an array) within files
+* If any instances exist across all files, proceed with the following, otherwise output to the user that no bracket notation conversion is needed and skip this step:
 
-* Replace `array[index]["Name"]` or `array[index]['Name']` with `array[index].Name` **only if `Name` is valid JS identifier**.
+* Replace `array[index]["Anything"]` or `array[index]['Anything']` with `array[index].Anything` **only if `Anything` is valid JS identifier**.
 * No user input required.
 
 * This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
