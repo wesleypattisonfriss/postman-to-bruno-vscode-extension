@@ -61,7 +61,7 @@ Do you need to import environments? (yes/no)
        }
        ```
      * Remove any line with empty value.
-           * Within the Bruno project folder (where `bruno.json` is located):
+           * Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
               * Save as `<bruno-project-path>/environments/<name>.bru` (create `environments` folder if missing).
               * Open the file in editor (one tab per file).
               * Output fenced code block + message:
@@ -78,7 +78,7 @@ Do you need to import environments? (yes/no)
      * If **yes** → repeat Step 1.
      * If **no** → proceed to Step 2.
 
-* This step is recursive. After completion, prompt the user to manually search for environment files in the environments folder to ensure all needed environments are created. If any are missing, repeat this step until all are created.
+* This step is recursive. After completion, prompt the user to manually search for environment files in the environments folder to ensure all needed environments are created. If any are missing, repeat step 1 until all are created.
 
 ---
 
@@ -99,7 +99,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
      CLIENT_ID=SomeValue
      CLIENT_SECRET=SomeValue
      ```
-  3. Within the Bruno project folder (where `bruno.json` is located):
+  3. Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
      * Save as `<bruno-project-path>/.env` (sibling to `bruno.json`).
   4. Open the created file in editor (one tab per file).
   5. Output fenced code block + message:
@@ -112,7 +112,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 ## **Step 3: Propagate `.env` Keys into Bruno Environments**
 
-* Within the Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * Read the `.env` file from that project folder.
   * For each key in `.env`: update/add entry in `environments/*.bru` files →
 
@@ -127,7 +127,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 ## **Step 4: Update Bruno API Usage**
 
-* For each Bruno project folder (where `bruno.json` is located):
+* For each Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * You'd be searching for instances of `bru.getEnvVar` within files
   * Replace only `bru.getEnvVar` with `bru.getVar` across all `.bru` request files in that project.
   * Preserve arguments and formatting.
@@ -135,13 +135,13 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * No user input required.
 
 * If more than 10 files found -> update in batches
-* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
+* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat step 5 until all are replaced.
 
 ---
 
 ## **Step 5: Replace `request.name` in Strings**
 
-* Within the Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * You'd be searching for instances of `"request.name"` within files
   * For each `.bru` request file in that project, replace `"request.name"` with the exact file name.
     Example: `bru.setNextRequest(request.name);` inside someRequest-Example.bru → `bru.setNextRequest("someRequest-Example");`.
@@ -155,7 +155,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 ## **Step 6: Update Bruno Setter Usage**
 
-* Within the Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * You'd be searching for instances of `bru.setEnvVar` within files
   * Replace `bru.setEnvVar` with `bru.setVar` across all `.bru` request files in that project.
   * Preserve arguments and formatting.
@@ -163,13 +163,13 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * No user input required.
 
 * If more than 10 files found -> update in batches
-* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat this step until all are replaced.
+* This step is recursive. After completion, prompt the user to manually search for `bru.setEnvVar` in all files. If any instances remain, repeat step 7 until all are replaced.
 
 ---
 
 ## **Step 7: Move the post-response script over to Tests script**
 
-* Within the Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * You'd be searching for instances of `script:post-response` within files
   * Replace `script:post-response` with `tests` across all `.bru` request files in that project so that the object script:post-response {} will be converted to tests {} (Note: make sure all found instances have been modified).
 * Open all updated request files in editor (one tab per file).
@@ -184,7 +184,7 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 * You'd be searching for instances of `xml2Json` within files
 * If any instances exist across all files, proceed with the following, otherwise output to the user that no XML parsing is needed and skip to Step 9:
 
-1. Run in folder with `bruno.json`:
+1. Run in folder with `bruno.json` (the main folder attached to the context in the very beginning):
 
    ```
    npm install fast-xml-parser
@@ -205,14 +205,14 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 * No user input required.
 
-* This step is recursive. After completion, prompt the user to manually search for `xml2Json` in all files. If any instances remain, repeat this step until all are replaced.
+* This step is recursive. After completion, prompt the user to manually search for `xml2Json` in all files. If any instances remain, repeat step 8 until all are replaced.
 ---
 
 ## **Step 9: Install Faker & Update Pre-request Scripts**
 * You'd be searching for instances of `$random` within files
 * If any instances exist across all files, proceed with the following, otherwise output to the user that no faker library usage is needed and skip to Step 10:
 
-1. Run in folder with `bruno.json`:
+1. Run in folder with `bruno.json` (the main folder attached to the context in the very beginning):
 
    ```
    npm install @faker-js/faker@^9.6.0 --save
@@ -231,12 +231,12 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 * No user input required.
 
-* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
+* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat step 10 until all are replaced.
 ---
 
 ## **Step 10: Add collection-level variables if any are defined**
 
-* Within the Bruno project folder (where `bruno.json` is located):
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
   * Read the `collection.bru` file from that project folder.
   * Remember all the keys within `vars:pre-request` or `vars:post-response` within that file.
   * Go through all request files and wherever you see one of the keys being used, refactor the code as following:
@@ -251,25 +251,54 @@ Please drag & drop the GLOBAL environment file here (or attach it).
 
 ## **Step 11: Add folder-level variables if any are defined**
 
-* Go through all Bruno request folders (wherever a `folder.bru` exists) and do the following for each folder:
-  * Read the `folder.bru` file from that specific bruno folder.
-  * Remember all the keys within `vars:pre-request` or `vars:post-response` within that file.
-  * Go through all request files within the folder with this specific folder.bru and wherever you see one of the keys being used, refactor the code as following:
-  * `bru.getVar(key)` → `bru.getFolderVar(key)` (Note: the key will be inside double quotations)
-  * And if the value for the specific key is a number, don't forget to convert to number: `bru.getFolderVar(key)` -> `Number(bru.getFolderVar(key))`
-* No user input required.
+* Find all Bruno request folders (wherever a `folder.bru` exists) and process them **one at a time**:
 
-* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
+  For each folder containing a `folder.bru` file:
+
+  1. **Output the folder name to the user:**
+     ```
+     Processing folder: <folder-name>
+     ```
+
+  2. **Read the `folder.bru` file** from that specific Bruno folder and identify all keys within `vars:pre-request` or `vars:post-response`.
+
+  3. **Display the found folder-level variables:**
+     ```
+     Found folder-level variables: <list-of-keys>
+     ```
+
+  4. **Ask for confirmation before processing:**
+     ```
+     Process folder-level variables for '<folder-name>'? (yes/no)
+     ```
+
+  5. **If user confirms (yes):**
+     * Go through all request files within this specific folder and wherever you see one of the keys being used, refactor the code as following:
+       * `bru.getVar(key)` → `bru.getFolderVar(key)` (Note: the key will be inside double quotations)
+       * And if the value for the specific key is a number, don't forget to convert to number: `bru.getFolderVar(key)` → `Number(bru.getFolderVar(key))`
+     * Open all updated request files in editor (one tab per file).
+     * Output: `Updated <X> files in folder '<folder-name>'`
+
+  6. **If user declines (no):**
+     * Skip this folder and move to the next one.
+
+  7. **After processing each folder, ask:**
+     ```
+     Continue to next folder? (yes/no)
+     ```
+
+* This step is recursive. After completion, prompt the user to manually search for the folder-level variable keys in all files. If any instances remain, repeat step 11 until all are replaced.
 ---
 
 ## **Step 12: Convert Bracket to Dot Notation**
-* You'd be searching for instances of `array[index]["Anything"]` (usage of bracket notation to get a property value from an index in an array) within files
-* If any instances exist across all files, proceed with the following, otherwise output to the user that no bracket notation conversion is needed and skip this step:
+* Within the Bruno project folder (the main folder attached to the context in the very beginning where `bruno.json` is located):
+  * You'd be searching for instances of `array[index]["Anything"]` (usage of bracket notation to get a property value from an index in an array) within files
+  * If any instances exist across all files, proceed with the following, otherwise output to the user that no bracket notation conversion is needed and skip this step:
+  
+  * Replace `array[index]["Anything"]` or `array[index]['Anything']` with `array[index].Anything` **only if `Anything` is valid JS identifier**.
+  * No user input required.
 
-* Replace `array[index]["Anything"]` or `array[index]['Anything']` with `array[index].Anything` **only if `Anything` is valid JS identifier**.
-* No user input required.
-
-* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat this step until all are replaced.
+* This step is recursive. After completion, prompt the user to manually search for `$random` in all files. If any instances remain, repeat step 12 until all are replaced.
 ---
 
 ## **Finalization Rules**
