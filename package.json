@@ -2,7 +2,7 @@
   "name": "friss-postman-to-bruno-migration",
   "displayName": "FRISS: Postman to Bruno - Migration",
   "description": "A VS Code extension to convert Postman collections to Bruno workflows with step-by-step guided migration.",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "publisher": "Sahar-Tarkhani-Friss",
   "icon": "icon.png",
   "engines": {
