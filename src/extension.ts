@@ -66,20 +66,17 @@ export function activate(context: vscode.ExtensionContext): void {
       vscode.window.showWarningMessage('Could not read prompt.txt, uh oh.');
     }
 
-    // Find Bruno project folders in the workspace
     const brunoFolders = await findBrunoFolders();
     if (brunoFolders.length === 0) {
       vscode.window.showErrorMessage('No folders containing bruno.json files found in the workspace. Please ensure you have Bruno projects in your workspace before starting the migration.');
       return;
     }
 
-    // Remember the first found Bruno project folder as the main folder
     const mainBrunoFolder = brunoFolders[0];
 
     const brunoContext = `\n\nFound ${brunoFolders.length} Bruno project(s) in the workspace:\n${brunoFolders.map(folder => `- ${folder}`).join('\n')}\n\nMain Bruno project folder for migration: ${mainBrunoFolder}\nAll migration steps will use this folder as context.`;
     prompt += brunoContext;
 
-    // Pass only the main folder to the chat context for migration steps
     await openChatWithPrompt(prompt, [mainBrunoFolder]);
   });
   context.subscriptions.push(disposable);

@@ -1,9 +1,9 @@
 {
   "name": "friss-postman-to-bruno-migration",
   "displayName": "FRISS: Postman to Bruno - Migration",
-  "description": "A VS Code extension to convert Postman collections to Bruno workflows for FRISS.",
-  "version": "0.1.0",
-  "publisher": "FRISS",
+  "description": "A VS Code extension to convert Postman collections to Bruno workflows with step-by-step guided migration.",
+  "version": "0.1.1",
+  "publisher": "Sahar-Tarkhani-Friss",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.90.0"
@@ -15,79 +15,7 @@
     "commands": [
       {
         "command": "friss.postman.startMigration",
-        "title": "FRISS: Postman to Bruno - Start Migration",
-        "steps": [
-          {
-            "id": "step0",
-            "prompt": "Please drag & drop the main folder here (or attach it). Then reply \"ready\".",
-            "validation": {
-              "requiresAttachment": true,
-              "requiresReply": "ready"
-            }
-          },
-          {
-            "id": "step1",
-            "prompt": "Do you need to import environments? (yes/no)",
-            "branch": {
-              "yes": [
-                {
-                  "prompt": "Please drag & drop the environment JSON here (or attach it). Then reply \"ready\".",
-                  "validation": { "requiresAttachment": true, "requiresReply": "ready" }
-                },
-                {
-                  "prompt": "New environment file name (without extension)?"
-                },
-                {
-                  "prompt": "Type exactly: CREATE ENV when ready."
-                }
-              ],
-              "no": "step2"
-            }
-          },
-          {
-            "id": "step2",
-            "prompt": "Please drag & drop the GLOBAL environment file here (or attach it). Then reply \"ready\".",
-            "validation": { "requiresAttachment": true, "requiresReply": "ready" }
-          },
-          {
-            "id": "step2a",
-            "prompt": "Create .env from this file now? (type exactly: CREATE DOTENV)"
-          },
-          {
-            "id": "step3",
-            "action": "propagateEnvKeys",
-            "description": "Propagate .env keys into all Bruno environments."
-          },
-          {
-            "id": "step4",
-            "action": "replaceText",
-            "description": "Replace bru.getEnvVar( → bru.getVar( across all requests."
-          },
-          {
-            "id": "step5",
-            "action": "replaceText",
-            "description": "Replace \"request.name\" with file basename (lower-kebab)."
-          },
-          {
-            "id": "step6",
-            "action": "replaceText",
-            "description": "Replace bru.setEnvVar( → bru.setVar(."
-          },
-          {
-            "id": "step7",
-            "action": "updateScripts",
-            "description": "Install Faker, update pre-request scripts with faker replacements."
-          },
-          {
-            "id": "step8",
-            "action": "replaceText",
-            "description": "Convert bracket notation to dot notation if identifier is valid."
-          },
-          {
-            "id": "final",
-            "prompt": "All steps done. Proceed with final Bruno .bru generation? (yes/no)"
-          }
-        ]
+        "title": "FRISS: Postman to Bruno - Start Migration"
       }
     ]
   },
@@ -110,5 +38,19 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wesleypattisonfriss/postman-to-bruno-vscode-extension.git"
-  }
+  },
+  "keywords": [
+    "postman",
+    "bruno",
+    "migration",
+    "api",
+    "rest",
+    "testing",
+    "collection"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wesleypattisonfriss/postman-to-bruno-vscode-extension/issues"
+  },
+  "homepage": "https://github.com/wesleypattisonfriss/postman-to-bruno-vscode-extension#readme"
 }
