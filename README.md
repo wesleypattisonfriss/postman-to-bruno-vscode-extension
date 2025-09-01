@@ -1,14 +1,27 @@
-# Postman → Bruno Migration Assistant
+# Pinsta→ Bruno Migration Assistant
 
 This extension helps migrate Postman collections into Bruno step by step, with **strict validation at every stage**.  
 The process is fully guided and ensures no mistakes.
 
 ---
 
+## 💡 Installation
+
+The extension is available as a VSIX file in the `releases` folder of this repository. To install it manually in VS Code:
+
+1. Download the VSIX file from the `releases` folder
+2. Open VS Code
+3. Press `Ctrl+Shift+P` or `F1` to open the Command Palette
+4. Type "Extensions: Install from VSIX" and select it
+5. Browse to and select the downloaded VSIX file
+6. Restart VS Code if prompted
+
+---
+
 ## 🚀 Usage
 
 1. Open your Postman project in VS Code.
-2. Run the command: `Postman: Start Migration`
+2. Run the command: `FRISS: Postman to Bruno - Start Migration`
 
 3. Follow the **interactive step-by-step prompts**:
 - Attach your main folder.
@@ -23,16 +36,19 @@ The process is fully guided and ensures no mistakes.
 
 ## ✅ Workflow Steps
 
-1. **Initial Setup** → Attach folder + confirm `ready`.
-2. **Import Environments** (optional).
-3. **Create `.env` from GLOBAL environment**.
-4. **Propagate `.env` keys into Bruno environments**.
-5. **Update Bruno API usage (`bru.getEnvVar` → `bru.getVar`)**.
-6. **Replace request.name with kebab-case file name**.
-7. **Update setter usage (`bru.setEnvVar` → `bru.setVar`)**.
-8. **Install Faker + update pre-request scripts**.
-9. **Convert bracket to dot notation**.
-10. **Confirm & generate final `.bru` outputs**.
+1. **Import Postman Environments** (optional) → Create Bruno environment files from Postman environment JSONs.
+2. **Create `.env` from GLOBAL Environment** → Build `.env` file with key/value pairs from GLOBAL environment.
+3. **Propagate `.env` Keys into Bruno Environments** → Update/add entries in `environments/*.bru` files with `{{process.env.KEY}}` format.
+4. **Update Bruno API Usage** → Replace `bru.getEnvVar` with `bru.getVar` across all `.bru` request files.
+5. **Replace `request.name` in Strings** → Replace `"request.name"` with the exact file name in all `.bru` files.
+6. **Update Bruno Setter Usage** → Replace `bru.setEnvVar` with `bru.setVar` across all `.bru` request files.
+7. **Move Post-Response to Tests** → Convert `script:post-response` blocks to `tests` blocks.
+8. **Install XML Parser & Update Tests Scripts** → Install `fast-xml-parser` if needed and replace `xml2Json` usage.
+9. **Install Faker & Update Pre-request Scripts** → Install Faker library and replace `$random` variables with Faker methods.
+10. **Add Collection-Level Variables** → Convert `bru.getVar(key)` to `bru.getCollectionVar(key)` for collection variables.
+11. **Add Folder-Level Variables** → Convert `bru.getVar(key)` to `bru.getFolderVar(key)` for folder variables.
+12. **Convert Bracket to Dot Notation** → Replace `array[index]["property"]` with `array[index].property` notation.
+13. **Finalization** → Generate final `.bru` files after all steps are confirmed.
 
 ---
 
@@ -56,4 +72,4 @@ The process is fully guided and ensures no mistakes.
 ## ⚡ Notes
 - Works on any Postman collection JSON + env JSON.  
 - Ensures strict Bruno-compatible format.  
-- No final output until **all steps confirmed**.  
+- No final output until **all steps confirmed**.
